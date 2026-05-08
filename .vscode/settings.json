@@ -1,0 +1,7 @@
+{
+    "chat.checkpoints.enabled": false,
+    "chat.agent.enabled": false,
+    "chat.customAgentInSubagent.enabled": false,
+    "chat.undoRequests.restoreInput": false,
+    "chat.agent.thinking.collapsedTools": "always"
+}
