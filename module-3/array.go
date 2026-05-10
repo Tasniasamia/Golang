@@ -32,9 +32,9 @@ fmt.Println(numbers3);
 //way 4
 fmt.Println("Way 4");
 var numbers4 = [6]int{100,200,300};
-// numbers4[3]=400;
-// numbers4[4]=500;
-// numbers4[5]=600;
+numbers4[3]=400;
+numbers4[4]=500;
+numbers4[5]=600;
 fmt.Println(numbers4);
 
 //way 5
@@ -47,5 +47,13 @@ fmt.Println(len(numbers5));
 
 fmt.Println(numbers5);
 
+
+
+//without type define array
+newArray:=[3]int {1,2,3};
+fmt.Println("newArray",newArray);
+
+newArrayString:=[3]string {"a","b","c"};
+fmt.Println("newArrayString",newArrayString);
 
 }
