@@ -28,7 +28,7 @@ func main(){
 	go uploadFile()
     go saveToDB()
 	go sendEmail()
-	time.Sleep(4*time.Second); // without it go METHOD_NAME() will not working
+	//time.Sleep(4*time.Second); // without it go METHOD_NAME() will not working
 
 	fmt.Println("Total time is ",time.Since(start));
 }
