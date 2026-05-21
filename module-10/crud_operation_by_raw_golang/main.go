@@ -76,7 +76,7 @@ if err != nil{
 var allUser[] userType;
 for rows.Next(){
 	var singleUser userType;
-	err:=rows.Scan(&singleUser.Id,&singleUser.Name,&singleUser.Age,&singleUser.Cgpa);
+	err:=rows.Scan(&singleUser.Id,&singleUser.Name,&singleUser.Cgpa,&singleUser.Age);
 	if err != nil{
 		res.WriteHeader(http.StatusInternalServerError);
         fmt.Fprintln(res,err);
@@ -96,14 +96,17 @@ decoder := json.NewDecoder(req.Body)
 decoder.DisallowUnknownFields();
 err :=decoder.Decode(&singleUser);
  
+
  if(err !=nil){
 	fmt.Fprintln(res,err);
 	return;
  }
+ fmt.Println(singleUser);
 
 var newUser userType;
-query := `INSERT INTO users (name, cgpa, age) VALUES ($1, $2, $3) RETURNING *`;
-err=db.QueryRow(context.Background(),query,singleUser.Name,singleUser.Age,singleUser.Cgpa).Scan(&newUser.Id,&newUser.Name,&newUser.Age,&newUser.Cgpa);
+
+query := `INSERT INTO users (name, age, cgpa) VALUES ($1, $2, $3) RETURNING *`;
+err=db.QueryRow(context.Background(),query,singleUser.Name,singleUser.Age,singleUser.Cgpa).Scan(&newUser.Id,&newUser.Name,&newUser.Cgpa,&newUser.Age);
 
 if err != nil{
 	res.WriteHeader(http.StatusInternalServerError);
@@ -135,23 +138,47 @@ var singleUser userType;
 decoder := json.NewDecoder(req.Body)
 decoder.DisallowUnknownFields();
 err=decoder.Decode(&singleUser);
+
  
  if(err !=nil){
+		 fmt.Println("wrong field")
+
 	fmt.Fprintln(res,err);
 	return;
  }
 
+//findUser
+var singleUser2 userType;
 
- for idx,values :=range users{
-	if(values.Id == i){
-	singleUser.Id=values.Id;
-     users[idx]=singleUser;
-	}
+ query:=`SELECT*FROM users WHERE ID=$1`;
+ 
+ err=db.QueryRow(context.Background(),query,i).Scan(&singleUser2.Id, &singleUser2.Name, &singleUser2.Cgpa, &singleUser2.Age);
+ 
+ if(err != nil){
+	 res.WriteHeader(http.StatusInternalServerError);
+	 fmt.Println("find user wrong")
+	 fmt.Fprintln(res,err);
+	 return;
  }
 
+ //update User
+
+ query2:=`UPDATE users SET name=$1, cgpa=$2, age=$3 WHERE id=$4 RETURNING *`;
+ err=db.QueryRow(context.Background(),query2,singleUser.Name,singleUser.Cgpa,singleUser.Age,i).Scan(&singleUser.Id,&singleUser.Name,&singleUser.Cgpa,&singleUser.Age);
+  if(err != nil){
+	 res.WriteHeader(http.StatusInternalServerError);
+	 fmt.Fprintln(res,err);
+	 return;
+ }
+
+
+ 
+ 
+ fmt.Println("after update query ",err);
+
  res.Header().Set("Content-Type","application/json");
-res.WriteHeader(http.StatusCreated);
-json.NewEncoder(res).Encode(users);
+res.WriteHeader(http.StatusOK);
+json.NewEncoder(res).Encode(singleUser);
 
 }
 
@@ -164,19 +191,47 @@ func deleteUser(res http.ResponseWriter,req*http.Request){
 	return;
  }
 
- var index int;
 
- for idx,val :=range users{
-	if(val.Id == i){
-		index=idx;
-		break;
-	}
+
+var singleUser2 userType;
+
+ query:=`SELECT*FROM users WHERE ID=$1`;
+ 
+ err=db.QueryRow(context.Background(),query,i).Scan(&singleUser2.Id, &singleUser2.Name, &singleUser2.Cgpa, &singleUser2.Age);
+ 
+ if(err != nil){
+	 res.WriteHeader(http.StatusInternalServerError);
+	 fmt.Println("find user wrong")
+	 fmt.Fprintln(res,err);
+	 return;
  }
 
-users =append(users[:index],users[index+1:]...)
+
+
+
+
+
+
+//  for idx,val :=range users{
+// 	if(val.Id == i){
+// 		index=idx;
+// 		break;
+// 	}
+//  }
+
+// users =append(users[:index],users[index+1:]...)
+
+query =`DELETE FROM users WHERE id=$1`;
+_,err=db.Exec(context.Background(),query,i);
+if err != nil {
+	res.WriteHeader(http.StatusInternalServerError);
+	fmt.Fprintln(res,err);
+	return;
+}
 res.Header().Set("Content-Type","application/json");
-res.WriteHeader(http.StatusCreated);
-json.NewEncoder(res).Encode(users);
+res.WriteHeader(http.StatusOK);
+fmt.Fprintln(res,"User Deleted Successfully")
+// json.NewEncoder(res).Encode(singleUser);
 
 }
 
