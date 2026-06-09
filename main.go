@@ -65,14 +65,14 @@ fmt.Println(user);
 //normal function
 cook("Pizza",true);
 
-//multiple value return function 
+//multiple value return function  
 pizzaName,pizzaInch:= pizza("chicken",8);
 fmt.Println(pizzaName);
 fmt.Println(pizzaInch);
 
 foreign,tourPlace:=travel("Maldives",true);
 fmt.Printf("Tour place is %s\n",tourPlace);
-fmt.Printf("Is Foreign %t",foreign);
+fmt.Printf("Is Foreign %t\n",foreign);
 
 
 
