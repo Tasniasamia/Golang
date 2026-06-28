@@ -32,6 +32,8 @@ func calculate()(result int){
 	return
 }
 
+
+
 func calculate2()(int){
 	result:=0;
 	fmt.Println("first ",result);
