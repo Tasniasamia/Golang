@@ -16,35 +16,40 @@ type user struct {
 
 var users []user
 
-func getProducts(w http.ResponseWriter, r *http.Request) {
-	 
+func handleCor(w http.ResponseWriter){
 	w.Header().Set("Access-Control-Allow-Origin", "*");
     w.Header().Set("Access-Control-Allow-Headers", "Content-Type");
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 	w.Header().Set("Content-Type","application/json");
+    
+}
 
-      if r.Method == http.MethodOptions {
+func handlePrefilght(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
+}
+
+func sendResponse(w http.ResponseWriter, data interface{},status int) {
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(data)
+}
+
+func getProducts(w http.ResponseWriter, r *http.Request) {
+	 handleCor(w);
+	handlePrefilght(w,r);
+    
 	if r.Method != http.MethodGet {
 		http.Error(w, "Plz give me GET request", http.StatusBadRequest)
 		return
 	}
-	json.NewEncoder(w).Encode(users)
+	sendResponse(w, users, http.StatusOK)
 }
 
 func createProduct(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*");
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type");
-	w.Header().Set("Content-Type","application/json");
-
-    if r.Method == http.MethodOptions {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
-
-	
-
+    handleCor(w);
+	handlePrefilght(w,r);
 	if r.Method != http.MethodPost {
 		http.Error(w, "Plz give me POST request", http.StatusBadRequest)
 		return
@@ -58,7 +63,7 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 	}
 	newUser.Id = len(users) + 1
 	users = append(users, newUser)
-	json.NewEncoder(w).Encode(newUser)
+	sendResponse(w, newUser, http.StatusCreated)
 }
 
 func main() {
