@@ -8,14 +8,22 @@ import (
 
 
 
-
+// func add(a,b int)int{
+// return a+b;
+// }
 
 
 
 
 
 func main() {
-	cmd.Start()
+	cmd.Start();
+
+	// var a string="12";
+	// var b string="13";
+	// add(a,b);
+
+
 }
 
 func init() {

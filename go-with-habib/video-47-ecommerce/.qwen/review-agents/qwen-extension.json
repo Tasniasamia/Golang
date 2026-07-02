@@ -1,0 +1,5 @@
+{
+  "name": "review-agents",
+  "description": "Project-local code-review and security-review sub-agents for the video-47-ecommerce Go API",
+  "version": "1.0.0"
+}

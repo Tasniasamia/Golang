@@ -1,18 +1,23 @@
 package cmd;
 import (
 	"fmt"
-	"mains/handler"
 	"mains/middleware"
 	"net/http"
+
 )
 func Start() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /", handler.GetProducts)
-	mux.HandleFunc("POST /product", handler.CreateProduct)
-	mux.HandleFunc("GET /product/{id}",handler.GetSingleProduct)
+	
+   managerStruct :=middleware.NewManager();
 
-	fmt.Println("Server is running on :8080")
-	globalRoute := middleware.GlobalRouter(mux)
+  managerStruct.Use(middleware.Logger, middleware.Hudai)
+   
+    globalRoute :=middleware.GlobalRouter(mux);
+
+	InitateRoutes(mux,managerStruct);
+
+	fmt.Println("Server is running on :8080");
+
 	err := http.ListenAndServe(":8080", globalRoute)
 	if err != nil {
 		fmt.Println("Error starting server:", err)
