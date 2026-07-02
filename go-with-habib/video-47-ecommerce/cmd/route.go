@@ -7,7 +7,12 @@ import (
 )
 
 func InitateRoutes(mux *http.ServeMux, manager *middleware.Manager) {
-	mux.HandleFunc("GET /", manager.With(http.HandlerFunc(handler.GetProducts)).ServeHTTP);
-				mux.HandleFunc("POST /product", manager.With(http.HandlerFunc(handler.CreateProduct)).ServeHTTP)
-				mux.HandleFunc("GET /product/{id}", manager.With(http.HandlerFunc(handler.GetSingleProduct)).ServeHTTP)
+	// mux.HandleFunc("GET /", manager.With(http.HandlerFunc(handler.GetProducts)).ServeHTTP);
+	// mux.HandleFunc("POST /product", manager.With(http.HandlerFunc(handler.CreateProduct)).ServeHTTP)
+	// mux.HandleFunc("GET /product/{id}", manager.With(http.HandlerFunc(handler.GetSingleProduct)).ServeHTTP)
+	
+	mux.Handle("GET /", manager.With(http.HandlerFunc(handler.GetProducts)));
+	mux.Handle("POST /product", manager.With(http.HandlerFunc(handler.CreateProduct)));
+	mux.Handle("GET /product/{id}", manager.With(http.HandlerFunc(handler.GetSingleProduct)));
+	
 }
