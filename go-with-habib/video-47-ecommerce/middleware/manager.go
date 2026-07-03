@@ -29,10 +29,9 @@ func (m *Manager) With(h http.Handler, md ...middleware) http.Handler {
 		next=middleware(next);
 
 	}
+	 
 
-	for _,md:=range m.globalMiddleware {
-		next = md(next)
-	}
+
 
   return next;
 	
@@ -40,6 +39,12 @@ func (m *Manager) With(h http.Handler, md ...middleware) http.Handler {
 
 }
 
-
+func (m *Manager) WrappedMux(h http.Handler) http.Handler {
+    next:=h;
+   for _,md:=range m.globalMiddleware {
+		next = md(next)
+	}
+   return next;
+}
 	
    

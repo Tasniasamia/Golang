@@ -10,9 +10,11 @@ func Start() {
 	
    managerStruct :=middleware.NewManager();
 
-  managerStruct.Use(middleware.Logger, middleware.Hudai)
+  managerStruct.Use(middleware.Logger, middleware.Hudai,middleware.Preflight,middleware.Cors)
    
-    globalRoute :=middleware.GlobalRouter(mux);
+    globalRoute :=managerStruct.WrappedMux(mux);
+
+
 
 	InitateRoutes(mux,managerStruct);
 
