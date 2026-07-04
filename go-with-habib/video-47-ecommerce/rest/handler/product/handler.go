@@ -24,7 +24,7 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding request body", http.StatusBadRequest)
 		return
 	}
-	insertUser:=database.Store(newUser);
+	insertUser:=newUser.Store();
 	util.SendResponse(w, insertUser, http.StatusCreated)
 }
 
@@ -41,6 +41,8 @@ func GetSingleProduct(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Product ID is required", http.StatusBadRequest)
 		return
 	}
+	
+
 	getUserById := database.Find(productIdInt);
 	if(getUserById.Id == productIdInt) {
 		util.SendResponse(w, getUserById, http.StatusOK)

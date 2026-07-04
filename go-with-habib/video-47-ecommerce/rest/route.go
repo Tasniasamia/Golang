@@ -3,7 +3,9 @@ package rest;
 import (
 	"net/http"
 	"mains/rest/handler/product"
+	"mains/rest/handler/user"
 	"mains/rest/middleware"
+
 )
 
 func InitateRoutes(mux *http.ServeMux, manager *middleware.Manager) {
@@ -16,5 +18,7 @@ func InitateRoutes(mux *http.ServeMux, manager *middleware.Manager) {
 	mux.Handle("GET /product/{id}", manager.With(http.HandlerFunc(product.GetSingleProduct), middleware.Auth));
 	mux.Handle("PUT /product/{id}", manager.With(http.HandlerFunc(product.UpdateProduct), middleware.Auth));
 	mux.Handle("DELETE /product/{id}", manager.With(http.HandlerFunc(product.DeleteProduct), middleware.Auth));
+	mux.Handle("POST /resister", manager.With(http.HandlerFunc(user.CreateUser), middleware.Auth));
+	mux.Handle("POST /login", manager.With(http.HandlerFunc(user.Login), middleware.Auth));
 
 }
