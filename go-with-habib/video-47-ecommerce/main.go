@@ -1,32 +1,28 @@
 package main
 
 import (
-"mains/cmd"
-"mains/database"
+	"mains/cmd"
+	"mains/database"
+	"mains/config"
+
 )
 
-
-
-
-// func add(a,b int)int{
-// return a+b;
-// }
 
 
 
 
 
 func main() {
-	cmd.Start();
+	
+	cmd.Serve();
 
-	// var a string="12";
-	// var b string="13";
-	// add(a,b);
 
 
 }
 
 func init() {
+		config.LoadConfig()
+
 	u1 := database.User{
 		Id:   1,
 		Name: "John Doe",

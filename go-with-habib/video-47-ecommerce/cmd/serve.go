@@ -1,28 +1,13 @@
 package cmd;
 import (
-	"fmt"
-	"mains/middleware"
-	"net/http"
+
+	"mains/rest"
+
+
 
 )
-func Start() {
-	mux := http.NewServeMux()
+func Serve() {
+	rest.Start();
 	
-   managerStruct :=middleware.NewManager();
 
-  managerStruct.Use(middleware.Logger, middleware.Hudai,middleware.Preflight,middleware.Cors)
-   
-    globalRoute :=managerStruct.WrappedMux(mux);
-
-
-
-	InitateRoutes(mux,managerStruct);
-
-	fmt.Println("Server is running on :8080");
-
-	err := http.ListenAndServe(":8080", globalRoute)
-	if err != nil {
-		fmt.Println("Error starting server:", err)
-		panic(err)
-	}
 }

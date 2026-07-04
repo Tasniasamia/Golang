@@ -1,9 +1,9 @@
-package cmd;
+package rest;
 
 import (
 	"net/http"
-	"mains/handler"
-	"mains/middleware"
+	"mains/rest/handler"
+	"mains/rest/middleware"
 )
 
 func InitateRoutes(mux *http.ServeMux, manager *middleware.Manager) {
