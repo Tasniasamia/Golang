@@ -7,14 +7,14 @@ import (
 	"fmt"
 )
 
-type Config struct {
+type config struct {
 	HTTP_PORT    string
 	VERSION     string
 	SERVICE_NAME string
 }
 
 
-var cfg Config;
+var cfg config;
 
 func LoadConfig() {
 	err := godotenv.Load()
@@ -36,7 +36,7 @@ func LoadConfig() {
 }
 
 
-func GetConfig() Config {
+func GetConfig() config {
 	return cfg;
 }
 

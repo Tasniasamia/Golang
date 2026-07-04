@@ -21,7 +21,7 @@ func main() {
 }
 
 func init() {
-		config.LoadConfig()
+	config.LoadConfig()
 
 	u1 := database.User{
 		Id:   1,
