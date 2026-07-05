@@ -21,14 +21,14 @@ type Payload struct{
 	
 }
 
-func convertBase64(data []byte) string {
+func ConvertBase64(data []byte) string {
 	enc :=base64.URLEncoding;
 	enc =enc.WithPadding(base64.NoPadding);
     b64 := enc.EncodeToString(data);
 	return b64;
 }
 
-func convertHMAC_SHA256(data []byte,secret []byte)[]byte{
+func ConvertHMAC_SHA256(data []byte,secret []byte)[]byte{
 	
 h := hmac.New(sha256.New, secret)
 h.Write(data);
@@ -50,10 +50,9 @@ func CreateJwtToken(secret string,payload Payload) string {
 	if err2 != nil {
 		panic(err2)
 	}	
-	headerEncoded:= convertBase64(headerBytes)
-	payloadEncoded:= convertBase64(payloadBytes)
-    signature:= convertHMAC_SHA256([]byte(headerEncoded + "." + payloadEncoded), []byte(secret));
-
-	return headerEncoded + "." + payloadEncoded + "." + convertBase64(signature);
-
+	headerEncoded:= ConvertBase64(headerBytes)
+	payloadEncoded:= ConvertBase64(payloadBytes)
+    signature:= ConvertHMAC_SHA256([]byte(headerEncoded + "." + payloadEncoded), []byte(secret));
+	signatureBase64:= ConvertBase64(signature)
+	return headerEncoded + "." + payloadEncoded + "." + signatureBase64
 }

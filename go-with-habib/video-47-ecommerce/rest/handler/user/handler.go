@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"mains/database"
 	"net/http"
+	"log"
+	"mains/config"
 )
 func CreateUser(w http.ResponseWriter, r *http.Request){
 
@@ -30,6 +32,9 @@ func Login(w http.ResponseWriter, r *http.Request){
 		return
 	}
 	insertUser:=database.Login(newUser.Email, newUser.Password);
-	util.SendResponse(w, insertUser, http.StatusCreated)
+	log.Println(insertUser);
+	token :=util.CreateJwtToken(config.GetConfig().JWT_SECRET, util.Payload{Sub: "1", Name: "tia", Email: "tia@example.com"});
+	log.Println(token);
+	util.SendResponse(w, token, http.StatusCreated)
 
 }

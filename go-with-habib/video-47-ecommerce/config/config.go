@@ -11,6 +11,7 @@ type config struct {
 	HTTP_PORT    string
 	VERSION     string
 	SERVICE_NAME string
+	JWT_SECRET string
 }
 
 
@@ -23,7 +24,7 @@ func LoadConfig() {
 	}
 	v := reflect.ValueOf(&cfg).Elem()
 
-	envList := []string{"HTTP_PORT", "VERSION", "SERVICE_NAME"}
+	envList := []string{"HTTP_PORT", "VERSION", "SERVICE_NAME", "JWT_SECRET"}
 	for _, key := range envList {
 		if val := os.Getenv(key); val != "" {
 			field := v.FieldByName(key)
